@@ -2,7 +2,7 @@
 
 const Room = require("../models/room")
 
-moduele.exports = {
+module.exports = {
     list: async (req, res) => {
         /*
                 #swagger.tags = ["Rooms"]
