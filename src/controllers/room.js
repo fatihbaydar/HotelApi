@@ -21,7 +21,7 @@ module.exports = {
 
         res.status(200).send({
             error: false,
-            details: await getModelListDetails(Room),
+            details: await res.getModelListDetails(Room),
             data
         })
     },

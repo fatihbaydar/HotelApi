@@ -85,7 +85,7 @@ module.exports = {
             new: await findOne({ _id: req.params.id })
         })
     },
-    
+
     delete: async (req, res) => {
         /*
         #swagger.tags = ["Users"]
