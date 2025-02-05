@@ -11,6 +11,24 @@ const HOST = process.env?.HOST || "127.0.0.1"
 const PORT = process.env?.PORT || 8000
 /* ------------------------------------------------------- */
 
+//* JSON
+
+app.use("/documents/json", (req, res) => {
+    res.sendFile("swagger.json", { root: "." })
+})
+
+//* SWAGGER
+
+const swaggerUi = require("swagger-ui-express")
+const swaggerJson = require("./src/configs/swagger.json")
+app.use("/documents/swagger", swaggerUi.serve, swaggerUi.setup(swaggerJson, { swaggerOptions: { persistAuthorization: true } }))
+
+//* REDOC
+
+const redoc = require("redoc-express")
+app.use("/documents/redoc", redoc({ specUrl: "/documents/json", title: "Redoc UI" }))
+/* ------------------------------------------------------- */
+
 //? CONFIGURATION
 
 const { dbConnection } = require("./src/configs/dbConnection")

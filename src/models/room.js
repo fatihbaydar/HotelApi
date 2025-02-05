@@ -6,13 +6,13 @@ const RoomSchema = new mongoose.Schema({
     roomNumber: {
         type: String,
         trim: true,
-        requred: true,
+        required: true,
         unique: true
     },
     bedType: {
         type: String,
         trim: true,
-        requred: true,
+        required: true,
         enum: ["single", "double", "family", "king"]
     },
     bedSpace: {

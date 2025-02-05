@@ -33,6 +33,13 @@ module.exports = {
         /*
         #swagger.tags = ["Users"]
         #swagger.summary = "Create User"
+        #swagger.parameters["body"] = {
+            in: "body",
+            required: true,
+            schema: {
+                $ref: "#/definitions/User"
+            }
+        }
         */
         if (
             !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(
@@ -68,6 +75,13 @@ module.exports = {
         /*
             #swagger.tags = ["Users"]
             #swagger.summary = "Update User"
+            #swagger.parameters["body"] = {
+            in: "body",
+            required: true,
+            schema: {
+                $ref: "#/definitions/User"
+            }
+        }
         */
         if (
             !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/.test(

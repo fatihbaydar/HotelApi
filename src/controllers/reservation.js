@@ -31,6 +31,13 @@ module.exports = {
         /*
             #swagger.tags = ["Reservations"]
             #swagger.summary = "Create Reservations"
+            #swagger.parameters["body"] = {
+                in: "body",
+                required: true,
+                schema: {
+                    $ref: "#/definitions/Reservation"
+            }
+        }
         */
         const arrivalDate = new Date(req.body.arrivalDate)
         const departureDate = new Date(req.body.departureDate)
@@ -77,6 +84,12 @@ module.exports = {
         /*
             #swagger.tags = ["Reservations"]
             #swagger.summary = "Update Reservations"
+            #swagger.parameters["body"] = {
+                in: "body",
+                required: true,
+                schema: {
+                    $ref: "#/definitions/Reservation"
+            }
         */
         const data = await Reservation.updateOne({ _id: req.params.id }, req.body, { runValidators: true })
 

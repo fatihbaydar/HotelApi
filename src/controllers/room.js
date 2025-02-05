@@ -5,17 +5,17 @@ const Room = require("../models/room")
 module.exports = {
     list: async (req, res) => {
         /*
-                #swagger.tags = ["Rooms"]
-                #swagger.summary = "List Rooms"
-                #swagger.description = `
-                    You can send query with endpoint for filter[], search[], sort[], page and limit.
-                    <ul> Examples:
-                        <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>
-                        <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>
-                        <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>
-                        <li>URL/?<b>page=2&limit=1</b></li>
-                    </ul>
-                `
+        #swagger.tags = ["Rooms"]
+        #swagger.summary = "List Rooms"
+        #swagger.description = `
+            You can send query with endpoint for filter[], search[], sort[], page and limit.
+            <ul> Examples:
+                <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>
+                <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>
+                <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>
+                <li>URL/?<b>page=2&limit=1</b></li>
+            </ul>
+        `
         */
         const data = await res.getModelList(Room)
 
@@ -30,6 +30,12 @@ module.exports = {
         /*
         #swagger.tags = ["Rooms"]
         #swagger.summary = "Create Rooms"
+        #swagger.parameters["body"] = {
+            in: "body",
+            required: true,
+            schema: {
+                    $ref: "#/definitions/Room"
+        }
         */
         const { bedType, bedSpace } = req.body
         if (bedType == "king" || bedType == "family") {
@@ -54,8 +60,8 @@ module.exports = {
 
     read: async (req, res) => {
         /*
-                    #swagger.tags = ["Users"]
-                    #swagger.summary = "Get Single User"
+        #swagger.tags = ["Rooms"]
+        #swagger.summary = "Get Single Rooom"
         */
         const data = await Room.findOne({ _id: req.params.id })
 
@@ -69,6 +75,12 @@ module.exports = {
         /*
         #swagger.tags = ["Rooms"]
         #swagger.summary = "Update Rooms"
+        #swagger.parameters["body"] = {
+            in: "body",
+            required: true,
+            schema: {
+                $ref: "#/definitions/Room"
+        }
         */
         const { bedType, bedSpace } = req.body
         if (bedType == "king" || bedType == "family") {
