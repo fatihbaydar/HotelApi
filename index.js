@@ -53,6 +53,9 @@ app.use(require("./src/middlewares/queryHandler"))
 
 //? ROUTES
 
+//* Static Files
+app.use("/upload", express.static("./upload"))
+
 //* HomePath
 app.all("/", (req, res) => {
     res.send({

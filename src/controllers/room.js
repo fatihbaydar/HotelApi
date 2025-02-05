@@ -43,12 +43,14 @@ module.exports = {
             if (!(bedSpace >= 3 && bedSpace <= 7)) throw new Error("Bed space must be between 3 and 7")
         }
 
-        if (req.file) {
-            req.body.iamges = req.filename
+        req.body.images = []
+        if(req.files){
+            for(let file of req.files){
+                req.body.images.push(file.path)
+            }
         }
-
+        
         console.log(req.body)
-        console.log(req.file)
 
         const data = await Room.create(req.body)
 
