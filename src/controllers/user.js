@@ -1,6 +1,7 @@
 "use strict"
 
 const { BadRequestError } = require("../errors/customError")
+const sendMail = require("../helpers/sendMail")
 const User = require("../models/user")
 
 module.exports = {
@@ -51,6 +52,14 @@ module.exports = {
             )
 
         const data = await User.create(req.body)
+
+        sendMail(
+            data.email,
+            "Welcome to our website",
+            ` <h1>Welcome</h1>
+            <h2>${data.username}</h2>
+            <p>"Welcome to our system</p>`
+        )   
 
         res.status(201).send({
             error: false,
