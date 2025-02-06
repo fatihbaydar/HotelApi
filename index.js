@@ -12,10 +12,10 @@ const PORT = process.env?.PORT || 8000
 /* ------------------------------------------------------- */
 
 //* JSON
-
-app.use("/documents/json", (req, res) => {
-    res.sendFile("swagger.json", { root: "." })
-})
+const path = require("path");
+app.use("/documents/json", (req, res) => { 
+    res.sendFile(path.join(__dirname, "src/configs/swagger.json"));
+});
 
 //* SWAGGER
 
