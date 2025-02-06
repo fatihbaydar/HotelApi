@@ -3,6 +3,7 @@
 const User = require("../models/user")
 const passwordEncrypt = require("../helpers/passwordEncrypt")
 const Token = require("../models/token")
+const jwt = require("jsonwebtoken")
 
 module.exports = {
     login: async (req, res) => {
@@ -33,6 +34,34 @@ module.exports = {
                         const tokenKey = passwordEncrypt(user.id + Date.now())
                         tokenData = await Token.create({ userId: user._id, token: tokenKey })
                     }
+
+                    const accessData = {
+                        _id: user._id,
+                        username: user.username,
+                        email: user.email,
+                        isActive: user.isActive,
+                        isAdmin: user.isAdmin,
+                    }
+
+                    const accessToken = jwt.sign(user.toJSON(), process.env.ACCESS_KEY, { expiresIn: process.env.ACCESS_EXP })
+
+                    const refreshData = {
+                        _id: user._id,
+                        password: user.password
+                    }
+
+                    const refreshToken = jwt.sign(refreshData, process.env.REFRESH_KEY, { expiresIn: process.env.REFRESH_EXP })
+
+                    res.status(200).send({
+                        error: false,
+                        token: tokenData.token,
+                        bearer: {
+                          access: accessToken,
+                          refresh: refreshToken
+                        },
+                        user,
+                      });
+                      
                 } else {
                     res.errorStatusCode = 401
                     throw new Error("This account is not active")
