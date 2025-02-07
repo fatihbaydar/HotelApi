@@ -56,12 +56,12 @@ module.exports = {
                         error: false,
                         token: tokenData.token,
                         bearer: {
-                          access: accessToken,
-                          refresh: refreshToken
+                            access: accessToken,
+                            refresh: refreshToken
                         },
                         user,
-                      });
-                      
+                    });
+
                 } else {
                     res.errorStatusCode = 401
                     throw new Error("This account is not active")
@@ -73,6 +73,54 @@ module.exports = {
         } else {
             res.errorStatusCode = 401
             throw new Error("Please enter username and password")
+        }
+    },
+
+    refresh: async (req, res) => {
+        /*
+            #swagger.tags = ["Authentication"]
+            #swagger.summary = "Refresh"
+            #swagger.description = 'Refresh with refreshToken for get accessToken'
+            #swagger.parameters["body"] = {
+                in: "body",
+                required: true,
+                schema: {
+                    "bearer": {
+                        refresh: '...refresh_token...'
+                    }
+                }
+            }
+        */
+        const refreshToken = req.body?.bearer?.refresh
+
+        if (refreshToken) {
+            const refreshData = jwt.verify(refreshToken, process.env.REFRESH_KEY)
+            if (refreshData) {
+                const user = await User.findOne({ _id: refreshData._id })
+                if (user && user.password == refreshData.password) {
+                    if (user.isActive) {
+                        res.status(200).send({
+                            error: false,
+                            bearer: {
+                                access: jwt.sign(user.toJSON(), process.env.ACCESS_KEY, { expiresIn: process.env.ACCESS_EXP })
+                            }
+                        })
+                    }else{
+                        res.errorStatusCode = 401
+                        throw new Error("This account is not active")
+                    }
+                } else {
+                    res.errorStatusCode = 401
+                    throw new Error("Wrong id or password")
+                }
+
+            } else {
+                res.errorStatusCode = 401
+                throw new Error("JWT refresh data is wrong")
+            }
+        } else {
+            res.errorStatusCode = 401
+            throw new Error("Plese enter bearer.refresh")
         }
     },
 
