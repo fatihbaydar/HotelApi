@@ -105,7 +105,7 @@ module.exports = {
                                 access: jwt.sign(user.toJSON(), process.env.ACCESS_KEY, { expiresIn: process.env.ACCESS_EXP })
                             }
                         })
-                    }else{
+                    } else {
                         res.errorStatusCode = 401
                         throw new Error("This account is not active")
                     }
@@ -130,15 +130,26 @@ module.exports = {
             #swagger.summary = "SimpleToken: Logout"
             #swagger.description = "Delete token key."
         */
-        const auth = req.headers?.authorization || null
-        const tokenKey = auth ? auth.split(" ") : null
+        const auth = req.headers?.authorization || null;
+        const tokenKey = auth ? auth.split(" ") : null;
+        let deleted = null;
 
-        const tokenData = await Token.deleteOne({ token: tokenKey[1] })
+        if (tokenKey[0] == "Token") {
 
-        res.send({
-            error: false,
-            message: "Logout is OK",
-            data: tokenData
-        })
+            const result = await Token.deleteOne({ token: tokenKey[1] });
+
+            res.send({
+                error: false,
+                message: "Token deleted. Logout was OK.",
+                result,
+            });
+
+        } else if (tokenKey[0] == "Bearer") {
+
+            res.send({
+                error: false,
+                message: "JWT: No need any process for logout.",
+            })
+        }
     }
 }
